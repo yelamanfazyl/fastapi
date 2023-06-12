@@ -25,7 +25,7 @@ class AuthRepository:
                 "_id": ObjectId(user_id),
             }
         )
-        return user
+        return user if user else None
 
     def get_user_by_email(self, email: str) -> dict | None:
         user = self.database["users"].find_one(

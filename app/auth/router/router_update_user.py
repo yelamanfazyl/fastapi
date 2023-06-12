@@ -19,5 +19,6 @@ def update_user(
     jwt_data: JWTData = Depends(parse_jwt_user_data),
 ) -> dict[str, str]:
     user_id = jwt_data.user_id
+    print(input.dict())
     svc.repository.update_user(user_id, input.dict())
     return Response(status_code=200)

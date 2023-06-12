@@ -3,7 +3,7 @@ services:
     name: fastapi
     runtime: docker
     plan: free
-    repo: https://github.com/atlekbai/fastapi-boilerplate.git
+    repo: https://github.com/yelamanfazyl/fastapi.git
     region: frankfurt
     branch: main
     envVars:

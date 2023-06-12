@@ -1,28 +1,23 @@
-from typing import Any
-
 from fastapi import Depends
-from pydantic import Field
-
-from app.utils import AppModel
-
-from ..adapters.jwt_service import JWTData
-from ..service import Service, get_service
+from pydantic import BaseModel
 from . import router
-from .dependencies import parse_jwt_user_data
+from ..service import Service, get_service
+from app.auth.adapters.jwt_service import JWTData
+from app.auth.router.dependencies import parse_jwt_user_data
 
 
-class GetMyAccountResponse(AppModel):
-    id: Any = Field(alias="_id")
-    email: str = ""
-    phone: str = ""
-    name: str = ""
-    city: str = ""
+class GetMyInfoResponse(BaseModel):
+    email: str
+    phone: str
+    name: str
+    city: str
 
 
-@router.get("/users/me", response_model=GetMyAccountResponse)
-def get_my_account(
-    jwt_data: JWTData = Depends(parse_jwt_user_data),
+@router.patch("/users/me", status_code=200, response_model=GetMyInfoResponse)
+def update_user(
     svc: Service = Depends(get_service),
+    jwt_data: JWTData = Depends(parse_jwt_user_data),
 ) -> dict[str, str]:
-    user = svc.repository.get_user_by_id(jwt_data.user_id)
-    return user
+    user_id = jwt_data.user_id
+
+    return svc.repository.get_user_by_id(user_id)

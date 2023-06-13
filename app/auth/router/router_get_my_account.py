@@ -11,9 +11,9 @@ from pydantic import Field
 class GetMyInfoResponse(AppModel):
     id: Any = Field(alias="_id")
     email: str
-    phone: str
-    name: str
-    city: str
+    phone: str = ""
+    name: str = ""
+    city: str = ""
 
 
 @router.get("/users/me", status_code=200, response_model=GetMyInfoResponse)

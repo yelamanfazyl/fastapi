@@ -23,6 +23,7 @@ class ShanyrakRepository:
             "rooms_count": input["rooms_count"],
             "description": input["description"],
             "media": [],
+            "comments": [],
             "created_at": datetime.utcnow(),
         }
 
@@ -162,6 +163,8 @@ class ShanyrakRepository:
 
         if shanyrak is None:
             return None
+
+        print(shanyrak)
 
         if shanyrak["comments"] is None:
             return None

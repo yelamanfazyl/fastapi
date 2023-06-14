@@ -16,7 +16,7 @@ class UpdateShanyrakRequest(AppModel):
     description: str
 
 
-@router.patch("/shanyraks/{id}", status_code=200)
+@router.patch("/{id}", status_code=200)
 def update_shanyrak(
     id: str,
     input: UpdateShanyrakRequest,

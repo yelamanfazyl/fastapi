@@ -1,28 +1,27 @@
 from fastapi import Depends, Response
-from app.utils import AppModel
+
 from app.auth.adapters.jwt_service import JWTData
 from app.auth.router.dependencies import parse_jwt_user_data
+from app.utils import AppModel
 
 from ..service import Service, get_service
 from . import router
 
 
-class DeleteShanyrakRequest(AppModel):
-    id: str
+class CreateCommentRequest(AppModel):
+    comment: str
 
 
-@router.delete("/{id}", status_code=200)
-def delete_shanyrak(
+@router.post("/{id}/comments", status_code=200)
+def create_comment(
     id: str,
-    input: DeleteShanyrakRequest,
+    input: CreateCommentRequest,
     jwt_data: JWTData = Depends(parse_jwt_user_data),
     svc: Service = Depends(get_service),
 ) -> dict[str, str]:
-    shanyrak = svc.repository.delete_shanyrak_by_id(id, jwt_data.user_id)
-
-    print(shanyrak)
-
-    if shanyrak is False:
+    user_id = jwt_data.user_id
+    comment = svc.repository.create_comment(id, user_id, input.comment)
+    if comment is None:
         return Response(status_code=404)
 
     return Response(status_code=200)

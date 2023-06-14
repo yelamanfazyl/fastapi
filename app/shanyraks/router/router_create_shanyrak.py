@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, Response
 
 from app.auth.adapters.jwt_service import JWTData
 from app.auth.router.dependencies import parse_jwt_user_data
@@ -41,5 +41,8 @@ def create_shanyrak(
     )
 
     print(shanyrak_id)
+
+    if shanyrak_id is None:
+        return Response(status_code=401)
 
     return CreateShanyrakResponse(id=shanyrak_id)

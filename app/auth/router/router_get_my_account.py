@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, Response
 from app.utils import AppModel
 from . import router
 from ..service import Service, get_service
@@ -14,6 +14,7 @@ class GetMyInfoResponse(AppModel):
     phone: str = ""
     name: str = ""
     city: str = ""
+    avatar: str = ""
 
 
 @router.get("/users/me", status_code=200, response_model=GetMyInfoResponse)
@@ -23,4 +24,9 @@ def get_user(
 ) -> dict[str, str]:
     user_id = jwt_data.user_id
 
-    return svc.repository.get_user_by_id(user_id)
+    result = svc.repository.get_user_by_id(user_id)
+
+    if result is None:
+        return Response(status_code=404)
+
+    return GetMyInfoResponse(**result)

@@ -27,6 +27,11 @@ def create_shanyrak(
     jwt_data: JWTData = Depends(parse_jwt_user_data),
     svc: Service = Depends(get_service),
 ) -> dict[str, str]:
+    location = svc.here_service.get_coordinates(input.address)
+
+    lat = location["lat"]
+    lng = location["lng"]
+
     user_id = jwt_data.user_id
     shanyrak_id = svc.repository.create_shanyrak(
         {
@@ -37,6 +42,7 @@ def create_shanyrak(
             "area": input.area,
             "rooms_count": input.rooms_count,
             "description": input.description,
+            "location": [lat, lng],
         }
     )
 

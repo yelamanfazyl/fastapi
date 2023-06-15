@@ -5,7 +5,7 @@ from app.utils import AppModel
 from ..service import Service, get_service
 from . import router
 from pydantic import Field
-from typing import List
+from typing import List, Dict
 
 
 class GetMyShanyrakResponse(AppModel):
@@ -17,6 +17,7 @@ class GetMyShanyrakResponse(AppModel):
     area: float
     rooms_count: int
     description: str
+    location: Dict[str, float] = {}
     media: List[str] = []
     comments: List[str] = []
 

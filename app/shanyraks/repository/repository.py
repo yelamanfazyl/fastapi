@@ -2,6 +2,7 @@ from datetime import datetime
 
 from bson.objectid import ObjectId
 from pymongo.database import Database
+from typing import Dict
 
 
 class ShanyrakRepository:
@@ -22,6 +23,10 @@ class ShanyrakRepository:
             "area": input["area"],
             "rooms_count": input["rooms_count"],
             "description": input["description"],
+            "location": {
+                "lattitude": input["location"][0],
+                "longitude": input["location"][1],
+            },
             "media": [],
             "comments": [],
             "created_at": datetime.utcnow(),
@@ -60,7 +65,9 @@ class ShanyrakRepository:
 
         return result
 
-    def update_shanyrak_by_id(self, id: str, user_id: str, data: dict) -> bool:
+    def update_shanyrak_by_id(
+        self, id: str, user_id: str, data: dict, location: Dict[str, float]
+    ) -> bool:
         found = self.database["shanyraks"].find_one(
             {
                 "_id": ObjectId(id),
@@ -81,6 +88,10 @@ class ShanyrakRepository:
                     "area": data["area"],
                     "rooms_count": data["rooms_count"],
                     "description": data["description"],
+                    "location": {
+                        "lattitude": location["lat"],
+                        "longitude": location["lng"],
+                    },
                 }
             },
         )
